@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace ABP_RoomBookingApp.Model
+namespace ABP_ConferenceBookingApp.Model
 {
     public class ServiceConference
     {
@@ -8,6 +8,8 @@ namespace ABP_RoomBookingApp.Model
         [Required]
         [MaxLength(100)]
         public string Name { get; set; }
+        public Decimal Price { get; set; }
         public ICollection<HallConference>? Conferences { get; set; }
+        public ICollection<BookingHall>? bookingHalls { get; set; }
     }
 }

@@ -1,8 +1,8 @@
-﻿using ABP_RoomBookingApp.Data;
-using ABP_RoomBookingApp.Model;
+﻿using ABP_ConferenceBookingApp.Data;
+using ABP_ConferenceBookingApp.Model;
 using Microsoft.EntityFrameworkCore;
 
-namespace ABP_RoomBookingApp.Repository
+namespace ABP_ConferenceBookingApp.Repository
 {
     public class PriceModifiersRepository : Interfaces.PriceModifiersRepository
     {
@@ -12,14 +12,14 @@ namespace ABP_RoomBookingApp.Repository
         {
             _context = applicationbDB;
         }
-        public Task<IEnumerable<PriceModifiers>> GetAllAsync()
+        public async Task<IEnumerable<PriceModifiers>> GetAllAsync()
         {
-            throw new NotImplementedException();
+            return await _context.PriceModifiers.OrderBy(x => x.dateStart).ToListAsync();
         }
 
-        public Task<PriceModifiers?> GetAsyncById(int id)
+        public async Task<PriceModifiers?> GetAsyncById(int id)
         {
-            throw new NotImplementedException();
+            return await _context.PriceModifiers.FirstOrDefaultAsync(x => x.Id == id);
         }
 
         public async Task SaveChangeAsync()

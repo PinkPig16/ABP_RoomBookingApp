@@ -1,9 +1,9 @@
-﻿using ABP_RoomBookingApp.Data;
-using ABP_RoomBookingApp.Interfaces;
-using ABP_RoomBookingApp.Model;
+﻿using ABP_ConferenceBookingApp.Data;
+using ABP_ConferenceBookingApp.Interfaces;
+using ABP_ConferenceBookingApp.Model;
 using Microsoft.EntityFrameworkCore;
 
-namespace ABP_RoomBookingApp.Repository
+namespace ABP_ConferenceBookingApp.Repository
 {
     public class ServiceConferenceRepository : Interfaces.ServiceConferenceRepository
     {
@@ -13,14 +13,14 @@ namespace ABP_RoomBookingApp.Repository
         {
             _context = applicationbDB;
         }
-        public Task<IEnumerable<ServiceConference>> GetAllAsync()
+        public async Task<IEnumerable<ServiceConference>> GetAllAsync()
         {
-            throw new NotImplementedException();
+            return await _context.serviceConferences.ToListAsync();
         }
 
-        public Task<ServiceConference?> GetAsyncById(int id)
+        public async Task<ServiceConference?> GetAsyncById(int id)
         {
-            throw new NotImplementedException();
+            return await _context.serviceConferences.FirstOrDefaultAsync(x => x.Id == id);
         }
 
         public async Task SaveChangeAsync()
@@ -52,5 +52,18 @@ namespace ABP_RoomBookingApp.Repository
             _context.Remove(serviceConference);
             await SaveChangeAsync();
         }
+
+        public  void SetStatusUnchanged(ServiceConference serviceConference)
+        {
+            var trackedEntity = _context.serviceConferences.Local.FirstOrDefault(e => e.Id == serviceConference.Id);
+
+            if (trackedEntity == null)
+            {
+
+                _context.serviceConferences.Attach(serviceConference);
+            }
+            _context.Entry(serviceConference).State = EntityState.Unchanged;
+        }
+
     }
 }

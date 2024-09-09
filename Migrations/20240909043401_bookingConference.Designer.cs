@@ -4,6 +4,7 @@ using ABP_ConferenceBookingApp.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ABP_ConferenceBookingApp.Migrations
 {
     [DbContext(typeof(ApplicationDB))]
-    partial class ApplicationDBModelSnapshot : ModelSnapshot
+    [Migration("20240909043401_bookingConference")]
+    partial class bookingConference
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -49,7 +52,7 @@ namespace ABP_ConferenceBookingApp.Migrations
 
                     b.HasIndex("hallConferenceId");
 
-                    b.ToTable("BookingHalls", t =>
+                    b.ToTable("bookingHalls", t =>
                         {
                             t.HasCheckConstraint("ValidDate", "[startTime] < [endTime]");
                         });
@@ -90,17 +93,17 @@ namespace ABP_ConferenceBookingApp.Migrations
                     b.Property<float>("Discount")
                         .HasColumnType("real");
 
-                    b.Property<TimeOnly>("dateEnd")
-                        .HasColumnType("time");
+                    b.Property<DateTime>("dateEnd")
+                        .HasColumnType("datetime2");
 
-                    b.Property<TimeOnly>("dateStart")
-                        .HasColumnType("time");
+                    b.Property<DateTime>("dateStart")
+                        .HasColumnType("datetime2");
 
                     b.HasKey("Id");
 
                     b.ToTable("PriceModifiers", t =>
                         {
-                            t.HasCheckConstraint("ValidDate", "[dateStart] < [dateEnd]")
+                            t.HasCheckConstraint("ValidDate", "[dateStart] > '2024-09-07 00:00:00' AND [dateStart] < [dateEnd]")
                                 .HasName("ValidDate1");
                         });
                 });

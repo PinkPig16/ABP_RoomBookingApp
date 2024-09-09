@@ -1,4 +1,4 @@
-namespace ABP_RoomBookingApp
+namespace ABP_ConferenceBookingApp
 {
     public class WeatherForecast
     {

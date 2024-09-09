@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace ABP_RoomBookingApp.Model
+namespace ABP_ConferenceBookingApp.Model
 {
     public class HallConference
     {

@@ -1,6 +1,6 @@
-﻿using ABP_RoomBookingApp.Model;
+﻿using ABP_ConferenceBookingApp.Model;
 
-namespace ABP_RoomBookingApp.Interfaces
+namespace ABP_ConferenceBookingApp.Interfaces
 {
     public interface PriceModifiersRepository
     {

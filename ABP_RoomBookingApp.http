@@ -1,6 +1,6 @@
-@ABP_RoomBookingApp_HostAddress = http://localhost:5262
+@ABP_ConferenceBookingApp_HostAddress = http://localhost:5262
 
-GET {{ABP_RoomBookingApp_HostAddress}}/weatherforecast/
+GET {{ABP_ConferenceBookingApp_HostAddress}}/weatherforecast/
 Accept: application/json
 
 ###

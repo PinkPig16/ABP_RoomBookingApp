@@ -1,6 +1,6 @@
-﻿using ABP_RoomBookingApp.Model;
+﻿using ABP_ConferenceBookingApp.Model;
 
-namespace ABP_RoomBookingApp.Interfaces
+namespace ABP_ConferenceBookingApp.Interfaces
 {
     public interface ServiceConferenceRepository
     {
@@ -10,5 +10,6 @@ namespace ABP_RoomBookingApp.Interfaces
         Task UpdateAsync(ServiceConference serviceConference);
         Task DeleteAsync(ServiceConference serviceConference);
         Task SaveChangeAsync();
+        void SetStatusUnchanged(ServiceConference serviceConference);
     }
 }

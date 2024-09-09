@@ -4,6 +4,7 @@ using ABP_ConferenceBookingApp.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ABP_ConferenceBookingApp.Migrations
 {
     [DbContext(typeof(ApplicationDB))]
-    partial class ApplicationDBModelSnapshot : ModelSnapshot
+    [Migration("20240908160649_changeServiceConference")]
+    partial class changeServiceConference
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -21,39 +24,6 @@ namespace ABP_ConferenceBookingApp.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
-
-            modelBuilder.Entity("ABP_ConferenceBookingApp.Model.BookingHall", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<DateOnly>("BookingDate")
-                        .HasColumnType("date");
-
-                    b.Property<TimeOnly>("EndTime")
-                        .HasColumnType("time");
-
-                    b.Property<TimeOnly>("StartTime")
-                        .HasColumnType("time");
-
-                    b.Property<decimal>("TotalPrice")
-                        .HasColumnType("decimal(12,2)");
-
-                    b.Property<int>("hallConferenceId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("hallConferenceId");
-
-                    b.ToTable("BookingHalls", t =>
-                        {
-                            t.HasCheckConstraint("ValidDate", "[startTime] < [endTime]");
-                        });
-                });
 
             modelBuilder.Entity("ABP_ConferenceBookingApp.Model.HallConference", b =>
                 {
@@ -90,18 +60,17 @@ namespace ABP_ConferenceBookingApp.Migrations
                     b.Property<float>("Discount")
                         .HasColumnType("real");
 
-                    b.Property<TimeOnly>("dateEnd")
-                        .HasColumnType("time");
+                    b.Property<DateTime>("dateEnd")
+                        .HasColumnType("datetime2");
 
-                    b.Property<TimeOnly>("dateStart")
-                        .HasColumnType("time");
+                    b.Property<DateTime>("dateStart")
+                        .HasColumnType("datetime2");
 
                     b.HasKey("Id");
 
                     b.ToTable("PriceModifiers", t =>
                         {
-                            t.HasCheckConstraint("ValidDate", "[dateStart] < [dateEnd]")
-                                .HasName("ValidDate1");
+                            t.HasCheckConstraint("ValidDate", "[dateStart] > '2024-09-07 00:00:00' AND [dateStart] < [dateEnd]");
                         });
                 });
 
@@ -126,21 +95,6 @@ namespace ABP_ConferenceBookingApp.Migrations
                     b.ToTable("serviceConferences");
                 });
 
-            modelBuilder.Entity("BookingHallServiceConference", b =>
-                {
-                    b.Property<int>("ServiceConferencesId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("bookingHallsId")
-                        .HasColumnType("int");
-
-                    b.HasKey("ServiceConferencesId", "bookingHallsId");
-
-                    b.HasIndex("bookingHallsId");
-
-                    b.ToTable("BookingHallServiceConference");
-                });
-
             modelBuilder.Entity("HallConferenceServiceConference", b =>
                 {
                     b.Property<int>("ConferencesId")
@@ -154,32 +108,6 @@ namespace ABP_ConferenceBookingApp.Migrations
                     b.HasIndex("ServiceConferencesId");
 
                     b.ToTable("HallConferenceServiceConference");
-                });
-
-            modelBuilder.Entity("ABP_ConferenceBookingApp.Model.BookingHall", b =>
-                {
-                    b.HasOne("ABP_ConferenceBookingApp.Model.HallConference", "hallConference")
-                        .WithMany()
-                        .HasForeignKey("hallConferenceId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("hallConference");
-                });
-
-            modelBuilder.Entity("BookingHallServiceConference", b =>
-                {
-                    b.HasOne("ABP_ConferenceBookingApp.Model.ServiceConference", null)
-                        .WithMany()
-                        .HasForeignKey("ServiceConferencesId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("ABP_ConferenceBookingApp.Model.BookingHall", null)
-                        .WithMany()
-                        .HasForeignKey("bookingHallsId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
                 });
 
             modelBuilder.Entity("HallConferenceServiceConference", b =>
